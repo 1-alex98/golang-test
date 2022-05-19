@@ -1,0 +1,39 @@
+{{define "header.html"}}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/public/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css">
+    <title>Trading like a PRO</title>
+</head>
+{{if not .NoHeader}}
+<nav class="navbar navbar-light navbar-expand-sm mb-5" style="background-color: #e3f2fd;">
+    <div class="container-fluid">
+        <!-- Links -->
+        <ul class="navbar-nav w-100">
+            <li class="nav-item">
+                <a class="nav-link" href="#">Stuff 1</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Stuff 2</a>
+            </li>
+            <li class="nav-item ms-auto">
+                <a class="nav-link" href="/login">Login</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+{{end}}
+
+<body>
+{{end}}
+
+
+{{define "footer.html"}}
+</body>
+</html>
+{{end}}
