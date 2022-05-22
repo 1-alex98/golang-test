@@ -8,12 +8,10 @@ import (
 	"trading/services/auth"
 )
 
-const UserKey = "user"
-
 // AuthRequired is a simple middleware to check the session
 func AuthRequired(c *gin.Context) {
 	session := sessions.Default(c)
-	user := session.Get(UserKey)
+	user := session.Get(auth.UserKey)
 	if user == nil {
 		c.HTML(http.StatusBadRequest, "error.html", gin.H{
 			"Error": "You must be logged in for this",
@@ -66,12 +64,12 @@ func Register(c *gin.Context) {
 
 func Logout(c *gin.Context) {
 	session := sessions.Default(c)
-	user := session.Get(UserKey)
+	user := session.Get(auth.UserKey)
 	if user == nil {
 		c.Redirect(303, "/")
 		return
 	}
-	session.Delete(UserKey)
+	session.Delete(auth.UserKey)
 	if err := session.Save(); err != nil {
 		c.Redirect(303, "/")
 		return
@@ -81,7 +79,7 @@ func Logout(c *gin.Context) {
 
 func Me(c *gin.Context) {
 	session := sessions.Default(c)
-	email := session.Get(UserKey)
+	email := session.Get(auth.UserKey)
 	c.JSON(http.StatusOK, gin.H{"email": email})
 }
 

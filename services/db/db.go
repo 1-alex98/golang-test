@@ -95,7 +95,6 @@ func UpdateCredit(email string, value float64) {
 	db.Model(&User{}).Where("email = ?", email).Update("credit", value)
 }
 
-func CreateOffer(email string, value float64, quantity float64, goodId uint) {
-	user := Offer{GoodID: goodId, Value: value, Quantity: quantity, UserID: GetUser(email).ID}
-	db.Create(&user)
+func CreateOffer(offer Offer) {
+	db.Create(&offer)
 }

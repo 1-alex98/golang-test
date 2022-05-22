@@ -18,15 +18,18 @@ function escapeHtml(html){
     return p.innerHTML;
 }
 
-function offers(dataServer){
+async function offers(dataServer){
     let offerTable = document.getElementById("offerTable");
+
+    const loggedIn = await document.loggedIn
+
     for(let offer of dataServer){
         offerTable.innerHTML+=`
 <tr>
     <td>${escapeHtml(offer["Quantity"])}</td>
     <td>${escapeHtml(offer["Value"])}<i class="bi bi-currency-euro"></i></td>
     <td>
-        <button type="button" class="btn btn-primary">
+        <button type="button" class="btn btn-primary${!loggedIn?' disabled':''}" onclick="alert('not implemented')">
             Buy
         </button>
     </td>

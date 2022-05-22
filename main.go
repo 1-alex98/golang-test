@@ -1,16 +1,14 @@
 package main
 
 import (
-	"errors"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
-	"html/template"
 	"net/http"
-	"strings"
 	"trading/controllers/account"
 	"trading/controllers/auth"
 	"trading/controllers/goods"
+	"trading/controllers/offer"
 	"trading/services/course"
 	"trading/services/db"
 )
@@ -27,29 +25,10 @@ func main() {
 	templateFunctions(router)
 	router.LoadHTMLGlob("templates/*.html")
 	routes(router)
-	router.Run() // listen and serve on 0.0.0.0:8080#
-}
-
-func templateFunctions(router *gin.Engine) {
-	router.SetFuncMap(template.FuncMap{
-		"dict": func(values ...interface{}) (map[string]interface{}, error) {
-			if len(values)%2 != 0 {
-				return nil, errors.New("invalid dict call")
-			}
-			dict := make(map[string]interface{}, len(values)/2)
-			for i := 0; i < len(values); i += 2 {
-				key, ok := values[i].(string)
-				if !ok {
-					return nil, errors.New("dict keys must be strings")
-				}
-				dict[key] = values[i+1]
-			}
-			return dict, nil
-		},
-		"small": func(value string) string {
-			return strings.ToLower(value)
-		},
-	})
+	err := router.Run()
+	if err != nil {
+		panic(err)
+	} // listen and serve on 0.0.0.0:8080
 }
 
 func routes(router *gin.Engine) {
@@ -72,7 +51,7 @@ func public(router *gin.Engine) {
 	router.GET("/goods", goods.GoodsView)
 	router.GET("/goods/:id", goods.GoodView)
 	router.GET("/api/goods/:id/course", goods.GoodCourse)
-	router.GET("/api/goods/:id/offers", goods.GoodOffers)
+	router.GET("/api/goods/:id/offers", offer.GoodOffers)
 }
 
 func private(router *gin.Engine) {
@@ -82,6 +61,7 @@ func private(router *gin.Engine) {
 		private.GET("/me", auth.Me)
 		private.GET("/status", auth.Status)
 		private.GET("/api/account", account.GetAccountData)
+		private.POST("/api/offer", offer.CreateOffer)
 		private.PUT("/api/account/:id", account.UpdateAccount)
 		private.PUT("/api/credit", account.UpdateCredit)
 		private.GET("/account", account.GetAccountView)

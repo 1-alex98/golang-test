@@ -6,14 +6,13 @@ import (
 	"golang.org/x/exp/slices"
 	"net/http"
 	"strconv"
+	"trading/services/auth"
 	"trading/services/db"
 )
 
-const UserKey = "user"
-
 func GetAccountData(c *gin.Context) {
 	session := sessions.Default(c)
-	email := session.Get(UserKey)
+	email := session.Get(auth.UserKey)
 	c.JSON(http.StatusOK, db.GetAccount(email.(string)))
 }
 
@@ -29,7 +28,7 @@ func UpdateAccount(c *gin.Context) {
 	}
 	goodId := c.Param("id")
 	session := sessions.Default(c)
-	email := session.Get(UserKey)
+	email := session.Get(auth.UserKey)
 	userId := db.GetUser(email.(string)).ID
 	goodIdInt, err := strconv.Atoi(goodId)
 	if err != nil {
@@ -45,14 +44,14 @@ func UpdateCredit(c *gin.Context) {
 		panic(err)
 	}
 	session := sessions.Default(c)
-	email := session.Get(UserKey)
+	email := session.Get(auth.UserKey)
 	db.UpdateCredit(email.(string), json.Value)
 }
 
 func GetAccountView(c *gin.Context) {
 	goods := db.Goods()
 	session := sessions.Default(c)
-	email := session.Get(UserKey)
+	email := session.Get(auth.UserKey)
 	accountData := db.GetAccount(email.(string))
 	user := db.GetUser(email.(string))
 

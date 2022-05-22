@@ -36,9 +36,9 @@ type AccountEntry struct {
 
 type Offer struct {
 	gorm.Model
-	Value     float64 `gorm:"notNull"`
-	Quantity  float64 `gorm:"notNull"`
+	Value     float64 `gorm:"notNull" json:"Value"`
+	Quantity  float64 `gorm:"notNull" json:"Quantity"`
 	UserID    uint
-	GoodID    uint
+	GoodID    uint `json:"GoodID"`
 	Completed bool
 }
