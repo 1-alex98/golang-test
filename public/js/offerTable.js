@@ -30,7 +30,10 @@ async function offers(dataServer){
     <td>${escapeHtml(offer["Value"])}<i class="bi bi-currency-euro"></i></td>
     <td>
         <button type="button" class="btn btn-primary${!loggedIn?' disabled':''}" onclick="alert('not implemented')">
-            Buy
+            <i class="bi bi-cart-plus"></i> Buy
+        </button>
+        <button type="button" class="btn btn-primary disabled" onclick="alert('not implemented')">
+            <i class="bi bi-trash3"></i> Withdraw
         </button>
     </td>
 </tr>
