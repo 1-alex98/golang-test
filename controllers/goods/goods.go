@@ -28,3 +28,9 @@ func GoodCourse(c *gin.Context) {
 	good := db.GoodByIdPreloaded(id)
 	c.JSON(http.StatusOK, good.DataPoints)
 }
+
+func GoodOffers(c *gin.Context) {
+	id := c.Param("id")
+	good := db.GoodByIdPreloaded(id)
+	c.JSON(http.StatusOK, good.Offers)
+}

@@ -8,6 +8,7 @@ type User struct {
 	Password      string `gorm:"notNull"`
 	Credit        float64
 	AccountEntrys []AccountEntry
+	Offers        []Offer `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 }
 
 type Good struct {
@@ -16,6 +17,7 @@ type Good struct {
 	Description   string
 	CurrentCourse float64
 	DataPoints    []DataPoint `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	Offers        []Offer     `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 }
 
 type DataPoint struct {
@@ -30,4 +32,13 @@ type AccountEntry struct {
 	UserID uint
 	GoodID uint
 	Good   Good
+}
+
+type Offer struct {
+	gorm.Model
+	Value     float64 `gorm:"notNull"`
+	Quantity  float64 `gorm:"notNull"`
+	UserID    uint
+	GoodID    uint
+	Completed bool
 }

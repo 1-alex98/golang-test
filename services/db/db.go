@@ -5,6 +5,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 	"os"
 )
 
@@ -23,7 +24,7 @@ func Init() {
 	if err != nil {
 		panic(err)
 	}
-	err = db.AutoMigrate(&User{}, &Good{}, &DataPoint{}, &AccountEntry{})
+	err = db.AutoMigrate(&User{}, &Good{}, &DataPoint{}, &AccountEntry{}, &Offer{})
 	if err != nil {
 		panic(err)
 	}
@@ -58,7 +59,7 @@ func GoodById(id string) (good Good) {
 }
 
 func GoodByIdPreloaded(id string) (good Good) {
-	db.Preload("DataPoints").First(&good, id)
+	db.Preload(clause.Associations).First(&good, id)
 	return
 }
 
@@ -92,4 +93,9 @@ func UpdateAccount(value float64, goodId uint, userId uint) {
 
 func UpdateCredit(email string, value float64) {
 	db.Model(&User{}).Where("email = ?", email).Update("credit", value)
+}
+
+func CreateOffer(email string, value float64, quantity float64, goodId uint) {
+	user := Offer{GoodID: goodId, Value: value, Quantity: quantity, UserID: GetUser(email).ID}
+	db.Create(&user)
 }

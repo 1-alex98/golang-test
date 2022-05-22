@@ -12,8 +12,29 @@
     </table>
     {{ end }}
     <script src="/public/js/coursePlot.js" defer></script>
+    <script src="/public/js/offerTable.js" defer></script>
     <div id='coursePlot'><!-- Plotly chart will be drawn inside this DIV --></div>
 
+    <h1>Offers on our platform:</h1>
+
+    <table class="table table-striped">
+        <thead>
+
+            <tr>
+                <td>
+                    Quantity
+                </td>
+                <td>
+                    Price per quantity
+                </td>
+                <td>
+                    Options
+                </td>
+            </tr>
+        </thead>
+        <tbody id="offerTable">
+        </tbody>
+    </table>
 </div>
 
 {{template "footer.html"}}

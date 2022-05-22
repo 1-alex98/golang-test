@@ -18,6 +18,7 @@ func AuthRequired(c *gin.Context) {
 		c.HTML(http.StatusBadRequest, "error.html", gin.H{
 			"Error": "You must be logged in for this",
 		})
+		c.Abort()
 		return
 	}
 	// Continue down the chain to handler etc
@@ -38,6 +39,25 @@ func Login(c *gin.Context) {
 	err := auth.Login(c, email, password)
 	if err != nil {
 		loginViewError(c, "Login failed")
+		return
+	}
+
+	c.Redirect(303, "/")
+}
+
+func Register(c *gin.Context) {
+	email := strings.Trim(c.PostForm("username"), " ")
+	password := strings.Trim(c.PostForm("password"), " ")
+	if email == "" || password == "" {
+		c.HTML(http.StatusBadRequest, "error.html", gin.H{
+			"Error": "Register failed; missing parameters",
+		})
+		return
+	}
+
+	err := auth.Register(c, email, password)
+	if err != nil {
+		registerViewError(c, "Register failed. Does such an account already exist?")
 		return
 	}
 
@@ -72,6 +92,21 @@ func Status(c *gin.Context) {
 func LoginView(context *gin.Context) {
 	loginViewError(context, "")
 }
+
 func loginViewError(context *gin.Context, error string) {
-	context.HTML(http.StatusOK, "login.html", gin.H{"Error": error})
+	context.HTML(http.StatusOK, "login.html", gin.H{
+		"Error":  error,
+		"Action": "Login",
+	})
+}
+
+func RegisterView(context *gin.Context) {
+	registerViewError(context, "")
+}
+
+func registerViewError(context *gin.Context, error string) {
+	context.HTML(http.StatusOK, "login.html", gin.H{
+		"Error":  error,
+		"Action": "Register",
+	})
 }

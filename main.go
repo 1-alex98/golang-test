@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"html/template"
 	"net/http"
+	"strings"
 	"trading/controllers/account"
 	"trading/controllers/auth"
 	"trading/controllers/goods"
@@ -45,6 +46,9 @@ func templateFunctions(router *gin.Engine) {
 			}
 			return dict, nil
 		},
+		"small": func(value string) string {
+			return strings.ToLower(value)
+		},
 	})
 }
 
@@ -60,12 +64,15 @@ func public(router *gin.Engine) {
 	})
 	router.GET("/", index)
 	router.GET("/login", auth.LoginView)
+	router.GET("/register", auth.RegisterView)
 	router.POST("/login", auth.Login)
+	router.POST("/register", auth.Register)
 	router.POST("/logout", auth.Logout)
 	router.GET("/api/goods", goods.GetGoods)
 	router.GET("/goods", goods.GoodsView)
 	router.GET("/goods/:id", goods.GoodView)
 	router.GET("/api/goods/:id/course", goods.GoodCourse)
+	router.GET("/api/goods/:id/offers", goods.GoodOffers)
 }
 
 func private(router *gin.Engine) {

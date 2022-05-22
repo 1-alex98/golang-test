@@ -1,4 +1,5 @@
 let navLoginLink = document.getElementById("navLoginLink");
+let accountLink = document.getElementById("accountLink");
 
 function logout(evt) {
     evt.preventDefault()
@@ -11,5 +12,9 @@ fetch('/private/me')
     .then(data => {
         navLoginLink.innerText= "Logout being: "+data["email"]
         navLoginLink.onclick = logout
+        document.loggedIn= true
     })
-    .catch(err => console.log(err));
+    .catch(_ => {
+        document.loggedIn= false
+        accountLink.style.display = "none"
+    });
