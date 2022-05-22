@@ -7,7 +7,10 @@ import (
 	"github.com/gin-gonic/gin"
 	"html/template"
 	"net/http"
+	"trading/controllers/account"
 	"trading/controllers/auth"
+	"trading/controllers/goods"
+	"trading/services/course"
 	"trading/services/db"
 )
 
@@ -15,6 +18,7 @@ var secret = []byte("secret")
 
 func main() {
 	db.Init()
+	course.Init()
 	router := gin.Default()
 	router.Use(gin.Logger())
 	store := cookie.NewStore(secret)
@@ -58,6 +62,10 @@ func public(router *gin.Engine) {
 	router.GET("/login", auth.LoginView)
 	router.POST("/login", auth.Login)
 	router.POST("/logout", auth.Logout)
+	router.GET("/api/goods", goods.GetGoods)
+	router.GET("/goods", goods.GoodsView)
+	router.GET("/goods/:id", goods.GoodView)
+	router.GET("/api/goods/:id/course", goods.GoodCourse)
 }
 
 func private(router *gin.Engine) {
@@ -66,6 +74,9 @@ func private(router *gin.Engine) {
 	{
 		private.GET("/me", auth.Me)
 		private.GET("/status", auth.Status)
+		private.GET("/api/account", account.GetAccountData)
+		private.PUT("/api/account/:id", account.UpdateAccount)
+		private.GET("/account", account.GetAccountView)
 	}
 }
 

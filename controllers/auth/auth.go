@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"
+	"trading/services/auth"
 )
 
 const UserKey = "user"
@@ -14,8 +15,9 @@ func AuthRequired(c *gin.Context) {
 	session := sessions.Default(c)
 	user := session.Get(UserKey)
 	if user == nil {
-		// Abort the request with the appropriate error code
-		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
+		c.HTML(http.StatusBadRequest, "error.html", gin.H{
+			"Error": "You must be logged in for this",
+		})
 		return
 	}
 	// Continue down the chain to handler etc
@@ -24,43 +26,43 @@ func AuthRequired(c *gin.Context) {
 
 // Login is a handler that parses a form and checks for specific data
 func Login(c *gin.Context) {
-	username := strings.Trim(c.PostForm("username"), " ")
+	email := strings.Trim(c.PostForm("username"), " ")
 	password := strings.Trim(c.PostForm("password"), " ")
-	if username == "" || password == "" {
+	if email == "" || password == "" {
 		c.HTML(http.StatusBadRequest, "error.html", gin.H{
 			"Error": "Login failed; missing parameters",
 		})
 		return
 	}
 
-	// Check for username and password match, usually from a database
-	if username != "hello" || password != "itsme" {
+	err := auth.Login(c, email, password)
+	if err != nil {
 		loginViewError(c, "Login failed")
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Successfully authenticated user"})
+	c.Redirect(303, "/")
 }
 
 func Logout(c *gin.Context) {
 	session := sessions.Default(c)
 	user := session.Get(UserKey)
 	if user == nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid session token"})
+		c.Redirect(303, "/")
 		return
 	}
 	session.Delete(UserKey)
 	if err := session.Save(); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save session"})
+		c.Redirect(303, "/")
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"message": "Successfully logged out"})
+	c.Redirect(303, "/")
 }
 
 func Me(c *gin.Context) {
 	session := sessions.Default(c)
-	user := session.Get(UserKey)
-	c.JSON(http.StatusOK, gin.H{"user": user})
+	email := session.Get(UserKey)
+	c.JSON(http.StatusOK, gin.H{"email": email})
 }
 
 func Status(c *gin.Context) {

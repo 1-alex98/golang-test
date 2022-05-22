@@ -1,0 +1,17 @@
+{{template "header.html"}}
+
+<div class="container">
+    <h2>You can trade the following goods. Click for more information.</h2>
+    <ul>
+        {{ with .Goods }}
+        {{ range . }}
+        <li>
+            <a href="/goods/{{.ID}}">{{ .Name }}</a>
+        </li>
+        {{ end }}
+        {{ end }}
+    </ul>
+
+</div>
+
+{{template "footer.html"}}
