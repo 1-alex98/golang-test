@@ -73,11 +73,23 @@ func SaveGoodDataPoint(good Good) {
 
 func GetAccount(email string) []AccountEntry {
 	user := User{}
-	db.Where("Email = ?", email).Preload("AccountEntrys.Good").First(&user)
+	db.Where("email = ?", email).Preload("AccountEntrys.Good").First(&user)
 	return user.AccountEntrys
 }
+
 func GetUser(email string) User {
 	user := User{}
 	db.Where("email = ?", email).First(&user)
 	return user
+}
+
+func UpdateAccount(value float64, goodId uint, userId uint) {
+	accountEntry := AccountEntry{Value: value, GoodID: goodId, UserID: userId}
+	if db.Model(&accountEntry).Where("good_id = ? AND user_id = ?", goodId, userId).Update("Value", value).RowsAffected == 0 {
+		db.Create(&accountEntry)
+	}
+}
+
+func UpdateCredit(email string, value float64) {
+	db.Model(&User{}).Where("email = ?", email).Update("credit", value)
 }

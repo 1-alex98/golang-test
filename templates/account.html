@@ -2,13 +2,14 @@
 <script src="/public/js/account.js"></script>
 <div class="container">
     <h2>You have the following things in your account.</h2>
+    <p>If you add goods to your account you must make sure to send them to our warehouse or account respectively.</p>
     <table class="table table-striped">
         <tbody>
         <tr>
             <td>Euros</td>
             <td>
                 {{ with .User }}{{ .Credit }}{{ end }}<i class="bi bi-currency-euro"></i>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <button onclick="saveAmountPopUp(-1)" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     <i class="bi bi-pencil"></i>
                 </button>
             </td>
@@ -19,7 +20,7 @@
             <td>{{ .Name }}</td>
             <td>
                 {{ .Value }}
-                <button onclick="evt=>{saveAmountPopUp({{ .ID }}, evt)}" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <button onclick="saveAmountPopUp({{ .ID }})" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     <i class="bi bi-pencil"></i>
                 </button>
             </td>
@@ -46,7 +47,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="saveAmount">Save changes</button>
+                <button type="button" class="btn btn-primary" onclick="saveAmount()">Save changes</button>
             </div>
         </div>
     </div>

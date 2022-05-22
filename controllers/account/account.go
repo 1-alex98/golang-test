@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"golang.org/x/exp/slices"
 	"net/http"
+	"strconv"
 	"trading/services/db"
 )
 
@@ -16,9 +17,36 @@ func GetAccountData(c *gin.Context) {
 	c.JSON(http.StatusOK, db.GetAccount(email.(string)))
 }
 
+type Update struct {
+	Value float64 `form:"Value" json:"Value" binding:"required"`
+}
+
 func UpdateAccount(c *gin.Context) {
-	//c.
-	//	c.JSON(http.StatusOK, db.GetAccount(email.(string)))
+	var json Update
+	err := c.BindJSON(&json)
+	if err != nil {
+		panic(err)
+	}
+	goodId := c.Param("id")
+	session := sessions.Default(c)
+	email := session.Get(UserKey)
+	userId := db.GetUser(email.(string)).ID
+	goodIdInt, err := strconv.Atoi(goodId)
+	if err != nil {
+		panic(err)
+	}
+	db.UpdateAccount(json.Value, uint(goodIdInt), userId)
+}
+
+func UpdateCredit(c *gin.Context) {
+	var json Update
+	err := c.BindJSON(&json)
+	if err != nil {
+		panic(err)
+	}
+	session := sessions.Default(c)
+	email := session.Get(UserKey)
+	db.UpdateCredit(email.(string), json.Value)
 }
 
 func GetAccountView(c *gin.Context) {
