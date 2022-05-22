@@ -1,16 +1,23 @@
 package db
 
 import (
+	"fmt"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"os"
 )
 
 var db *gorm.DB
 var pepper = "pepper" //obviously pepper should be set to something else here
 
 func Init() {
-	dsn := "host=localhost user=postgres password=banana dbname=postgres port=5432 sslmode=disable"
+	dsn := fmt.Sprintf(
+		"host=%s user=%s password=%s dbname=postgres port=5432 sslmode=disable",
+		os.Getenv("POSTGRES_HOST"),
+		os.Getenv("POSTGRES_USER"),
+		os.Getenv("POSTGRES_PASSWORD"),
+	)
 	var err error
 	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {

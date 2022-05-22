@@ -15,7 +15,17 @@ services:
     networks:
       - postgres
     restart: unless-stopped
-
+  trading:
+    build: .
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_HOST: ${POSTGRES_HOST:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-banana}
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8080:8080"
+    networks:
+      - postgres
 networks:
   postgres:
     driver: bridge
