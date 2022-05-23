@@ -13,7 +13,7 @@ import (
 	"trading/services/db"
 )
 
-var secret = []byte("secret")
+var secret = []byte("secret") //TODO: set via env
 
 func main() {
 	db.Init()
