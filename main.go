@@ -16,6 +16,14 @@ import (
 var secret = []byte("secret") //TODO: set via env
 
 func main() {
+	router := setup()
+	err := router.Run()
+	if err != nil {
+		panic(err)
+	} // listen and serve on 0.0.0.0:8080
+}
+
+func setup() *gin.Engine {
 	db.Init()
 	course.Init()
 	router := gin.Default()
@@ -25,10 +33,7 @@ func main() {
 	templateFunctions(router)
 	router.LoadHTMLGlob("templates/*.html")
 	routes(router)
-	err := router.Run()
-	if err != nil {
-		panic(err)
-	} // listen and serve on 0.0.0.0:8080
+	return router
 }
 
 func routes(router *gin.Engine) {
