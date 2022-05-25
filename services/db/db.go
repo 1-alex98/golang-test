@@ -67,6 +67,10 @@ func SaveGood(good Good) {
 	db.Updates(&good)
 }
 
+func CreateGood(good Good) {
+	db.Create(&good)
+}
+
 func SaveGoodDataPoint(good Good) {
 	dataPoint := DataPoint{Value: good.CurrentCourse, GoodID: good.ID}
 	db.Create(&dataPoint)
