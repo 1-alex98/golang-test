@@ -3,6 +3,7 @@ package integration_tests
 import (
 	"context"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
 	"os"
@@ -10,6 +11,8 @@ import (
 	"time"
 	"trading/core"
 )
+
+var router *gin.Engine
 
 func TestMain(m *testing.M) {
 	ctx := context.Background()
@@ -41,7 +44,7 @@ func TestMain(m *testing.M) {
 	if err != nil {
 		panic(err)
 	}
-	core.Setup()
+	router = core.Setup()
 	code := m.Run()
 	os.Exit(code)
 }

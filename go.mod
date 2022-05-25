@@ -6,6 +6,7 @@ require (
 	github.com/gin-contrib/sessions v0.0.5
 	github.com/gin-gonic/gin v1.7.7
 	github.com/go-co-op/gocron v1.13.0
+	github.com/goccy/go-json v0.9.7
 	github.com/testcontainers/testcontainers-go v0.13.0
 	golang.org/x/crypto v0.0.0-20220518034528-6f7dac969898
 	golang.org/x/exp v0.0.0-20220518171630-0b5c67f07fdf
