@@ -10,7 +10,7 @@ import (
 )
 
 func TestGoodsApi(t *testing.T) {
-	db.CreateGood(db.Good{Name: "test", Description: "test description", CurrentCourse: 33})
+	db.CreateGood(db.Good{Name: "test 2", Description: "test description 2", CurrentCourse: 33})
 
 	w := httptest.NewRecorder()
 	req, _ := http.NewRequest("GET", "/api/goods", nil)
