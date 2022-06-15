@@ -37,6 +37,13 @@ func UpdateAccount(c *gin.Context) {
 	db.UpdateAccount(json.Value, uint(goodIdInt), userId)
 }
 
+// UpdateCredit godoc
+// @Summary      Update your credit
+// @Description  api to set a self chosen new account value
+// @Accept       json
+// @Param        Update  body      Update  true  "Add account value"
+// @Success      200
+// @Router       /api/credit [post]
 func UpdateCredit(c *gin.Context) {
 	var json Update
 	err := c.BindJSON(&json)

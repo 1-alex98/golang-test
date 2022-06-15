@@ -4,11 +4,14 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
+	"github.com/swaggo/files"
+	"github.com/swaggo/gin-swagger"
 	"net/http"
 	"trading/controllers/account"
 	"trading/controllers/auth"
 	"trading/controllers/goods"
 	"trading/controllers/offer"
+	_ "trading/docs"
 	"trading/services/course"
 	"trading/services/db"
 )
@@ -49,6 +52,8 @@ func public(router *gin.Engine) {
 	router.GET("/goods/:id", goods.GoodView)
 	router.GET("/api/goods/:id/course", goods.GoodCourse)
 	router.GET("/api/goods/:id/offers", offer.GoodOffers)
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
 }
 
 func private(router *gin.Engine) {

@@ -1,0 +1,57 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a golang playground application",
+        "title": "Trading Golang API",
+        "contact": {
+            "email": "alexander.von.trostorff@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "paths": {
+        "/api/credit": {
+            "post": {
+                "description": "api to set a self chosen new account value",
+                "consumes": [
+                    "application/json"
+                ],
+                "summary": "Update your credit",
+                "parameters": [
+                    {
+                        "description": "Add account value",
+                        "name": "Update",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/account.Update"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "account.Update": {
+            "type": "object",
+            "required": [
+                "Value"
+            ],
+            "properties": {
+                "Value": {
+                    "type": "number"
+                }
+            }
+        }
+    }
+}

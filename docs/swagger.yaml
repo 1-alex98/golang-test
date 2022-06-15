@@ -1,0 +1,37 @@
+basePath: /
+definitions:
+  account.Update:
+    properties:
+      Value:
+        type: number
+    required:
+    - Value
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: alexander.von.trostorff@gmail.com
+  description: This is a golang playground application
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: Trading Golang API
+  version: "1.0"
+paths:
+  /api/credit:
+    post:
+      consumes:
+      - application/json
+      description: api to set a self chosen new account value
+      parameters:
+      - description: Add account value
+        in: body
+        name: Update
+        required: true
+        schema:
+          $ref: '#/definitions/account.Update'
+      responses:
+        "200":
+          description: ""
+      summary: Update your credit
+swagger: "2.0"
