@@ -6,9 +6,7 @@ if (!Array.prototype.last){
 
 fetch(`/api/goods/${location.pathname.split("/").last()}/offers`)
     .then(response => response.json())
-    .then(data => {
-        offers(data)
-    })
+    .then(offers)
     .catch(err => console.log(err));
 
 function escapeHtml(html){
@@ -18,21 +16,25 @@ function escapeHtml(html){
     return p.innerHTML;
 }
 
+
 async function offers(dataServer){
     let offerTable = document.getElementById("offerTable");
 
     const loggedIn = await document.loggedIn
 
     for(let offer of dataServer){
+        if(offer["Completed"]) continue
         offerTable.innerHTML+=`
 <tr>
     <td>${escapeHtml(offer["Quantity"])}</td>
     <td>${escapeHtml(offer["Value"])}<i class="bi bi-currency-euro"></i></td>
     <td>
-        <button type="button" class="btn btn-primary${!loggedIn?' disabled':''}" onclick="alert('not implemented')">
+        <button type="button" class="btn btn-primary${!loggedIn?' disabled':''}" 
+        data-bs-toggle="modal" data-bs-target="#buyModal" 
+        onclick="buyDialog(${offer["ID"]}, ${offer["Value"]}, ${offer["Quantity"]})">
             <i class="bi bi-cart-plus"></i> Buy
         </button>
-        <button type="button" class="btn btn-primary disabled" onclick="alert('not implemented')">
+        <button type="button" class="btn btn-primary disabled">
             <i class="bi bi-trash3"></i> Withdraw
         </button>
     </td>

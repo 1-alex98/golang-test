@@ -67,6 +67,14 @@ func SaveGood(good Good) {
 	db.Updates(&good)
 }
 
+func UpdateUser(user User) {
+	db.Updates(&user)
+}
+
+func UpdateOffer(offer Offer) {
+	db.Updates(&offer)
+}
+
 func CreateGood(good Good) {
 	db.Create(&good)
 }
@@ -88,9 +96,22 @@ func GetUser(email string) User {
 	return user
 }
 
+func GetUserById(id string) User {
+	user := User{}
+	db.First(&user, id)
+	return user
+}
+
 func UpdateAccount(value float64, goodId uint, userId uint) {
-	accountEntry := AccountEntry{Value: value, GoodID: goodId, UserID: userId}
+	accountEntry := AccountEntry{Value: &value, GoodID: goodId, UserID: userId}
 	if db.Model(&accountEntry).Where("good_id = ? AND user_id = ?", goodId, userId).Update("Value", value).RowsAffected == 0 {
+		db.Create(&accountEntry)
+	}
+}
+
+func AddToAccount(add float64, goodId uint, userId uint) {
+	accountEntry := AccountEntry{Value: &add, GoodID: goodId, UserID: userId}
+	if db.Model(&accountEntry).Where("good_id = ? AND user_id = ?", goodId, userId).Update("Value", gorm.Expr("Value + ?", add)).RowsAffected == 0 {
 		db.Create(&accountEntry)
 	}
 }
@@ -101,4 +122,9 @@ func UpdateCredit(email string, value float64) {
 
 func CreateOffer(offer Offer) {
 	db.Create(&offer)
+}
+
+func OfferById(id string) (offer Offer) {
+	db.First(&offer, id)
+	return
 }

@@ -64,6 +64,7 @@ func private(router *gin.Engine) {
 		private.GET("/status", auth.Status)
 		private.GET("/api/account", account.GetAccountData)
 		private.POST("/api/offer", offer.CreateOffer)
+		private.POST("/api/offer/:id/order", offer.OrderOffer)
 		private.PUT("/api/account/:id", account.UpdateAccount)
 		private.PUT("/api/credit", account.UpdateCredit)
 		private.GET("/account", account.GetAccountView)

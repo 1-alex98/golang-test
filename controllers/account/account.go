@@ -17,14 +17,14 @@ func GetAccountData(c *gin.Context) {
 }
 
 type Update struct {
-	Value float64 `form:"Value" json:"Value" binding:"required"`
+	Value float64 `form:"Value" json:"Value"`
 }
 
 func UpdateAccount(c *gin.Context) {
 	var json Update
 	err := c.BindJSON(&json)
 	if err != nil {
-		panic(err)
+		return
 	}
 	goodId := c.Param("id")
 	session := sessions.Default(c)
@@ -90,5 +90,5 @@ func valueOfGood(data []db.AccountEntry, id uint) float64 {
 	if index == -1 {
 		return 0
 	}
-	return data[index].Value
+	return *data[index].Value
 }

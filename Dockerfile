@@ -12,6 +12,8 @@ COPY go.sum ./
 RUN go mod download
 
 COPY . ./
+RUN go install github.com/swaggo/swag/cmd/swag@latest
+RUN swag init
 
 RUN go build -o /trading
 
@@ -24,6 +26,7 @@ WORKDIR /
 
 COPY --from=build /trading /trading
 COPY --from=build /app/public/ /public/
+COPY --from=build /app/docs/ /docs/
 COPY --from=build /app/templates/ /templates/
 ENV GIN_MODE release
 

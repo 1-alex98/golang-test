@@ -12,8 +12,8 @@ var min = 0.1
 func generateCurrentCourseHistory() {
 	goods := db.Goods()
 	for _, good := range goods {
-		value := newValue(good.CurrentCourse)
-		good.CurrentCourse = value
+		value := newValue(*good.CurrentCourse)
+		good.CurrentCourse = &value
 		db.SaveGood(good)
 	}
 }
